@@ -1,0 +1,370 @@
+You are a world-class Principal AI Engineer, Staff Software Architect, DevTools SaaS CTO, and elite hackathon execution strategist.
+
+Your task is NOT to brainstorm loosely.
+
+Your task is to act as my execution cofounder and generate a COMPLETE end-to-end implementation blueprint + production-quality code plan for building an MVP of:
+
+"AI-Powered Code Review Assistant for Engineering Teams"
+
+GOAL:
+Build a hackathon-winning, demo-ready MVP in 24–48 hours.
+
+Primary objective:
+A developer opens a GitHub Pull Request → the system automatically reviews changed code in real-time → detects bugs, security vulnerabilities, performance issues, code smells, maintainability concerns, and missing tests → posts actionable review comments.
+
+The output must be extremely practical, implementation-focused, and optimized for execution speed.
+
+DO NOT produce vague conceptual answers.
+
+Think like:
+- principal software architect
+- senior AI systems engineer
+- startup CTO
+- GitHub platform expert
+- hackathon product strategist
+
+==========================================================
+PROJECT CONSTRAINTS
+==========================================================
+
+TEAM:
+4 developers
+
+SKILL PROFILE:
+Intermediate developers with some AI app experience.
+
+Known stack familiarity:
+- Python
+- FastAPI
+- Next.js
+- Streamlit
+- Groq API
+- LLaMA models
+- basic RAG
+- GitHub APIs
+- REST APIs
+
+TIME LIMIT:
+48 hours absolute maximum
+
+BUDGET:
+Minimal / hackathon budget
+
+PREFERRED AI STACK:
+Groq + LLaMA
+
+PRIMARY GOAL:
+Ship a polished demo that wins judging.
+
+SECONDARY GOAL:
+Architecture should be realistically scalable post-hackathon.
+
+NON-GOALS:
+Do NOT overengineer enterprise production infra.
+
+==========================================================
+PROJECT VISION
+==========================================================
+
+Product name:
+CodeSentinel AI
+
+Tagline:
+"Your 24/7 Senior Code Reviewer"
+
+Core demo story:
+A developer creates a PR containing intentionally flawed code.
+The AI instantly reviews the PR.
+It identifies:
+- security issues
+- performance bottlenecks
+- maintainability problems
+- logic bugs
+- missing tests
+Then posts intelligent review comments.
+
+Optional wow factor:
+Conversational "Ask AI Reviewer" chat for explanations.
+
+==========================================================
+SUCCESS CRITERIA
+==========================================================
+
+The project MUST:
+1. Actually be buildable in 48 hours.
+2. Produce an impressive live demo.
+3. Look like a real startup product.
+4. Be modular and clean.
+5. Minimize implementation risk.
+6. Avoid unnecessary complexity.
+7. Maximize judge wow factor.
+
+==========================================================
+STRICT EXECUTION STRATEGY
+==========================================================
+
+Use THIS exact execution philosophy:
+
+PHASE 1:
+Scope freezing
+
+PHASE 2:
+Architecture design
+
+PHASE 3:
+Repo scaffolding
+
+PHASE 4:
+Backend implementation
+
+PHASE 5:
+GitHub integration
+
+PHASE 6:
+AI review engine
+
+PHASE 7:
+Multi-agent analysis system
+
+PHASE 8:
+Frontend dashboard
+
+PHASE 9:
+Testing strategy
+
+PHASE 10:
+Demo hardening
+
+PHASE 11:
+Pitch preparation
+
+Proceed sequentially.
+
+DO NOT jump ahead.
+
+DO NOT dump everything at once.
+
+Each phase must be completed fully before moving to next phase.
+
+==========================================================
+MVP FEATURE LOCK
+==========================================================
+
+ONLY include:
+
+MUST HAVE:
+- GitHub PR webhook listener
+- Pull request diff fetching
+- changed file extraction
+- AI code review analysis
+- issue categorization
+- severity classification
+- actionable review comments
+- dashboard UI
+- review history
+- demo-ready UX
+
+SHOULD HAVE:
+- conversational explanation mode
+- coding guideline customization
+
+NICE TO HAVE ONLY IF EASY:
+- auto-fix suggestions
+- Slack notifications
+
+DO NOT INCLUDE:
+- GitLab integration
+- Jira integration
+- Kubernetes deployment
+- enterprise RBAC
+- SSO
+- billing
+- multi-tenancy
+- complex DevOps infra
+
+==========================================================
+ARCHITECTURE REQUIREMENTS
+==========================================================
+
+Design the cleanest hackathon-feasible architecture.
+
+Preferred stack unless strong justification otherwise:
+
+Frontend:
+Next.js
+
+Backend:
+FastAPI
+
+AI:
+Groq + LLaMA 3.x
+
+Agent orchestration:
+LangGraph OR CrewAI (justify choice)
+
+Static analysis:
+Semgrep
+Bandit
+ESLint / Pylint
+
+Database:
+SQLite OR Supabase
+
+Background processing:
+Simple queue if needed
+
+GitHub:
+GitHub App OR webhook strategy
+
+Hosting:
+Localhost + ngrok for demo OR better alternative
+
+Auth:
+Simplified hackathon auth
+
+==========================================================
+AI REVIEW SYSTEM REQUIREMENTS
+==========================================================
+
+The AI reviewer must combine:
+
+1. Static analysis
+2. LLM reasoning
+3. Multi-agent specialization
+
+Required agent roles:
+- Security Reviewer
+- Performance Reviewer
+- Code Quality Reviewer
+- Testing Reviewer
+
+For each agent define:
+- exact responsibility
+- input schema
+- output schema
+- prompt design
+- failure cases
+
+Explain whether parallel execution is worth it.
+
+==========================================================
+DELIVERABLE FORMAT
+==========================================================
+
+FOR EACH PHASE provide:
+
+1. Objective
+2. Design decisions
+3. Tradeoff analysis
+4. Folder structure
+5. Implementation steps
+6. Code files to create
+7. Interfaces/contracts
+8. API endpoints
+9. data models
+10. prompt engineering details
+11. pseudocode
+12. implementation risks
+13. fallback plans
+14. demo validation checklist
+
+==========================================================
+CODE GENERATION REQUIREMENTS
+==========================================================
+
+When generating code:
+
+- production-quality
+- modular
+- readable
+- strongly typed where relevant
+- no placeholder pseudo-implementations unless explicitly labeled
+- include comments where useful
+- avoid unnecessary abstraction
+
+For every code file:
+show exact path
+
+Example:
+backend/app/main.py
+frontend/src/app/page.tsx
+
+==========================================================
+PROMPT ENGINEERING REQUIREMENTS
+==========================================================
+
+Design optimal prompts for:
+- PR summarization
+- security review
+- performance review
+- code smell detection
+- test coverage review
+- conversational explanation
+
+Prompts must:
+- minimize hallucinations
+- force structured JSON output
+- improve deterministic quality
+- support code diff context
+
+==========================================================
+TESTING REQUIREMENTS
+==========================================================
+
+Generate:
+- sample intentionally flawed PR files
+- SQL injection example
+- hardcoded secret example
+- O(n²) inefficiency
+- missing validation
+- no tests scenario
+
+These must make the demo compelling.
+
+==========================================================
+PITCH REQUIREMENTS
+==========================================================
+
+Generate:
+- judge-friendly architecture diagram description
+- 10-slide pitch structure
+- live demo script
+- storytelling narrative
+- judge Q&A preparation
+
+==========================================================
+WORKING STYLE
+==========================================================
+
+Act as execution cofounder.
+
+Challenge bad decisions.
+
+If something is too ambitious:
+say so clearly and replace it.
+
+Prefer shipping over perfection.
+
+Optimize for hackathon victory.
+
+==========================================================
+OUTPUT CONTROL
+==========================================================
+
+Start ONLY with:
+
+PHASE 1 — Scope Freeze
+
+Deliver:
+- exact final MVP
+- architecture simplifications
+- build/no-build decisions
+- implementation risk matrix
+- team task allocation
+
+After Phase 1 completes, STOP.
+
+Wait for my explicit instruction:
+"Proceed to Phase 2"
+
+Do NOT continue automatically.

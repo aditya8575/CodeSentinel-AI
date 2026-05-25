@@ -1,0 +1,408 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: CodeSentinel AI API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: reviews
+    description: PR review operations
+  - name: chat
+    description: AI chat operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      summary: List all PR reviews
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Submit a PR URL or diff for AI review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Review created and analysis started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  /reviews/{id}:
+    get:
+      operationId: getReview
+      tags: [reviews]
+      summary: Get a single review with all findings
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Review with findings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewWithFindings"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+    delete:
+      operationId: deleteReview
+      tags: [reviews]
+      summary: Delete a review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /reviews/{id}/reanalyze:
+    post:
+      operationId: reanalyzeReview
+      tags: [reviews]
+      summary: Re-run AI analysis on an existing review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewWithFindings"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /reviews/stats:
+    get:
+      operationId: getReviewStats
+      tags: [reviews]
+      summary: Get aggregate stats across all reviews
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewStats"
+
+  /chat/{reviewId}:
+    get:
+      operationId: getChatHistory
+      tags: [chat]
+      summary: Get chat messages for a review
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Chat messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+    post:
+      operationId: sendChatMessage
+      tags: [chat]
+      summary: Send a message to the AI reviewer (SSE stream)
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageInput"
+      responses:
+        "200":
+          description: SSE stream of AI response
+          content:
+            text/event-stream: {}
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        prUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, analyzing, completed, failed]
+        totalFindings:
+          type: integer
+        criticalCount:
+          type: integer
+        highCount:
+          type: integer
+        mediumCount:
+          type: integer
+        lowCount:
+          type: integer
+        language:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - status
+        - totalFindings
+        - criticalCount
+        - highCount
+        - mediumCount
+        - lowCount
+        - createdAt
+        - updatedAt
+
+    ReviewInput:
+      type: object
+      properties:
+        title:
+          type: string
+        prUrl:
+          type: string
+        diffContent:
+          type: string
+        language:
+          type: string
+      required:
+        - title
+
+    Finding:
+      type: object
+      properties:
+        id:
+          type: integer
+        reviewId:
+          type: integer
+        category:
+          type: string
+          enum: [security, performance, code_quality, testing, maintainability]
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        title:
+          type: string
+        description:
+          type: string
+        suggestion:
+          type: string
+        filePath:
+          type: ["string", "null"]
+        lineNumber:
+          type: ["integer", "null"]
+        codeSnippet:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reviewId
+        - category
+        - severity
+        - title
+        - description
+        - suggestion
+        - createdAt
+
+    ReviewWithFindings:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        prUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, analyzing, completed, failed]
+        diffContent:
+          type: ["string", "null"]
+        totalFindings:
+          type: integer
+        criticalCount:
+          type: integer
+        highCount:
+          type: integer
+        mediumCount:
+          type: integer
+        lowCount:
+          type: integer
+        language:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        findings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Finding"
+      required:
+        - id
+        - title
+        - status
+        - totalFindings
+        - criticalCount
+        - highCount
+        - mediumCount
+        - lowCount
+        - createdAt
+        - updatedAt
+        - findings
+
+    ReviewStats:
+      type: object
+      properties:
+        totalReviews:
+          type: integer
+        totalFindings:
+          type: integer
+        criticalFindings:
+          type: integer
+        highFindings:
+          type: integer
+        mediumFindings:
+          type: integer
+        lowFindings:
+          type: integer
+        findingsByCategory:
+          type: object
+          additionalProperties:
+            type: integer
+        recentActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+      required:
+        - totalReviews
+        - totalFindings
+        - criticalFindings
+        - highFindings
+        - mediumFindings
+        - lowFindings
+        - findingsByCategory
+        - recentActivity
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        reviewId:
+          type: integer
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reviewId
+        - role
+        - content
+        - createdAt
+
+    ChatMessageInput:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+        - content
+
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

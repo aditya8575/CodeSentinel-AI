@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "CodeSentinel AI"
+version = "1.0.0"
+id = "artifacts/codesentinel"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20593
+
+[services.development]
+run = "pnpm --filter @workspace/codesentinel run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/codesentinel", "run", "build" ]
+publicDir = "artifacts/codesentinel/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20593"
+BASE_PATH = "/"
